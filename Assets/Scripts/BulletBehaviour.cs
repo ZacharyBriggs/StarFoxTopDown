@@ -15,4 +15,13 @@ public class BulletBehaviour : MonoBehaviour
             Destroy(this.gameObject);
         this.transform.position += new Vector3(0,Speed,0);
 	}
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Enemy")
+        {
+            var damageable = collision.gameObject.GetComponent<DamageableClass>();
+            damageable.TakeDamage(10);
+        }
+    }
 }
