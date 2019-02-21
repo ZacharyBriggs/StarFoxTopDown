@@ -16,11 +16,11 @@ public class BulletBehaviour : MonoBehaviour
         this.transform.position += new Vector3(0,Speed,0);
 	}
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy")
         {
-            var damageable = collision.gameObject.GetComponent<DamageableClass>();
+            var damageable = collision.gameObject.GetComponent<IDamageable>();
             damageable.TakeDamage(10);
         }
     }

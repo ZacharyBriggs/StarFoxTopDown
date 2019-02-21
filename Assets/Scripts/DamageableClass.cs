@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DamageableClass
+public interface IDamageable
 {
-    protected FloatVariable _health;
-    public abstract void TakeDamage(float amount);
+    void TakeDamage(float amount);
 }
