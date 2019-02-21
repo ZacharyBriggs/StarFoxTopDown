@@ -4,17 +4,31 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour
 {
-    public float Speed;
-    public float Lifetime;
-	
-	// Update is called once per frame
+    public float Speed = 1;
+    public Vector3 Direction;
+    public float Lifetime = 1;
+    enum MovementType
+    {
+        Straight,
+        Wavy,
+        Homing
+    };
+
+    MovementType mt = MovementType.Straight;
+
+    void Start()
+    {
+        mt = MovementType.Straight;
+    }
+    // Update is called once per frame
 	void Update ()
     {
         Lifetime -= Time.deltaTime;
         if (Lifetime <= 0)
             Destroy(this.gameObject);
-        this.transform.position += new Vector3(0,Speed,0);
-	}
+        if(mt == MovementType.Straight)
+            this.transform.position += Direction * Speed * Time.deltaTime;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
