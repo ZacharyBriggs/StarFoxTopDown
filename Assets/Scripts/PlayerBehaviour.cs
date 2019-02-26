@@ -1,28 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    public float Speed;
-    public BulletBehaviour ProjectilePrefab;
-    private CharacterController cc;
+    [FormerlySerializedAs("Speed")] public float speed;
+    [FormerlySerializedAs("ProjectilePrefab")] public BulletBehaviour projectilePrefab;
+    private CharacterController _cc;
 
 	// Use this for initialization
-	void Start ()
+    private void Start ()
     {
-        cc = GetComponent<CharacterController>();
+        _cc = GetComponent<CharacterController>();
 	}
 
 	// Update is called once per frame
-	void Update ()
+    private void Update ()
     {
-        this.transform.position += PlayerInput.InputVector*Speed*Time.deltaTime;
+        this.transform.position += PlayerInput.InputVector*speed*Time.deltaTime;
         if(Input.GetButton("Fire1"))
         {
             var transform1 = transform;
-            var b = Instantiate(ProjectilePrefab,transform1.position, transform1.rotation);
-            b.Direction = new Vector3(0, 1, 0);
+            var b = Instantiate(projectilePrefab,transform1.position, transform1.rotation);
+            b.direction = new Vector3(0, 1, 0);
         }
 	}
 }
