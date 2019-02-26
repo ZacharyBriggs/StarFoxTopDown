@@ -9,7 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e4246de2c13d3349a4ef0b9d51521b3, type: 3}
-  m_Name: newBulletPattern
+  m_Name: NewBulletPattern
   m_EditorClassIdentifier: 
-  bullet: {fileID: 0}
-  Bullets: []
+  speed: 1
+  direction: {x: 0, y: -1, z: 0}
+  lifetime: 1
+  mt: 0
+  bullets:
+  - {fileID: 114982785771649496, guid: c765fc108f73dc94d89784806987e353, type: 2}
+  - {fileID: 114172750920013924, guid: 5243fb386b4f3e94dbd1f8325ee76212, type: 2}
+  - {fileID: 114781417429790950, guid: 9b8d2c4e902a62a429829246028f920e, type: 2}
+  - {fileID: 114596429313836612, guid: f2f34e9a7dad82642aabc6a68800d7da, type: 2}
