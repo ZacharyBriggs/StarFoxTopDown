@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "NewBulletPattern")]
 public class BulletPatternScriptable : ScriptableObject
 {
-    public float Speed = 1;
-    public Vector3 Direction;
-    public float Lifetime = 1;
+    [FormerlySerializedAs("Speed")] public float speed = 1;
+    [FormerlySerializedAs("Direction")] public Vector3 direction;
+    [FormerlySerializedAs("Lifetime")] public float lifetime = 1;
     public enum MovementType
     {
         Straight,
@@ -15,14 +16,16 @@ public class BulletPatternScriptable : ScriptableObject
         Homing
     };
     public MovementType mt;
-    public List<BulletBehaviour> Bullets;
+    [FormerlySerializedAs("Bullets")] public List<BulletBehaviour> bullets;
     public void AddBullet()
     {
-        var bul = new BulletBehaviour();
-        bul.Speed = Speed;
-        bul.Direction = Direction;
-        bul.Lifetime = Lifetime;
-        bul.mt = mt;
-        Bullets.Add(bul);
+        var bul = new GameObject();
+        bul.AddComponent<BulletBehaviour>();
+        var bb = bul.GetComponent<BulletBehaviour>();
+        bb.speed = speed;
+        bb.direction = direction;
+        bb.lifetime = lifetime;
+        bb.mt = (BulletBehaviour.MovementType) mt;
+        bullets.Add(bb);
     }
 }
