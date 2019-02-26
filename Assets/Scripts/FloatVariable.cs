@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Variables/Float")]
 public class FloatVariable : Variable
 {
-    public float _Value;
-    public float _MaxValue;
+    [FormerlySerializedAs("_Value")] public float value;
+    [FormerlySerializedAs("_MaxValue")] public float maxValue;
     public override object Value
     {
         get
         {
-            return _Value;
+            return value;
+        }
+        set
+        {
+            this.value = (float) value;
+            onValueChanged.Invoke();
         }
     }
 
@@ -19,7 +25,12 @@ public class FloatVariable : Variable
     {
         get
         {
-            return _MaxValue;
+            return maxValue;
+        }
+        set
+        {
+            maxValue = (float) value;
+            this.value = maxValue;
         }
     }
 }

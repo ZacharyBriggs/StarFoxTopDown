@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class Variable : ScriptableObject
 {
-    public abstract object Value { get; }
-    public abstract object MaxValue { get; }
+    public abstract object Value { get; set; }
+    public abstract object MaxValue { get; set; }
     public delegate void OnValueChanged();
     public OnValueChanged onValueChanged;
 
