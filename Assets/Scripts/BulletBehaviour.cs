@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BulletBehaviour : MonoBehaviour
 {
-    public float Speed = 1;
-    public Vector3 Direction;
-    public float Lifetime = 1;
+    [FormerlySerializedAs("Speed")] public float speed = 1;
+    [FormerlySerializedAs("Direction")] public Vector3 direction;
+    [FormerlySerializedAs("Lifetime")] public float lifetime = 1;
     public enum MovementType
     {
         Straight,
@@ -14,41 +16,47 @@ public class BulletBehaviour : MonoBehaviour
         Homing
     };
 
-    private GameObject Player;
+    private GameObject _player;
 
     public MovementType mt = MovementType.Straight;
 
-    void Start()
+    private void Start()
     {
         if (mt == MovementType.Homing)
         {
-            Speed *= 10;
-            Player = GameObject.Find("Player");
+            speed *= 10;
+            _player = GameObject.Find("Player");
         }
 
     }
     // Update is called once per frame
-	void Update ()
+    private void Update ()
     {
-        Lifetime -= Time.deltaTime;
-        if (Lifetime <= 0)
+        lifetime -= Time.deltaTime;
+        if (lifetime <= 0)
             Destroy(this.gameObject);
-        if(mt == MovementType.Straight)
-            this.transform.position += Direction * Speed * Time.deltaTime;
-        if (mt == MovementType.Wavy)
-            this.transform.position += new Vector3(Mathf.Sin(Direction.x), Mathf.Sin(Direction.y), Mathf.Sin(Direction.z))*Speed*Time.deltaTime;
-        if(mt== MovementType.Homing)
+        switch (mt)
         {
-            Direction = Player.transform.position - transform.position;
-            Direction.Normalize();
-            var rb2d = this.GetComponent<Rigidbody2D>();
-            rb2d.AddForce(Direction * Speed * Time.deltaTime,ForceMode2D.Force);
+            case MovementType.Straight:
+                this.transform.position += direction * speed * Time.deltaTime;
+                break;
+            case MovementType.Wavy:
+                this.transform.position += new Vector3(Mathf.Sin(direction.x), Mathf.Sin(direction.y), Mathf.Sin(direction.z))*speed*Time.deltaTime;
+                break;
+            case MovementType.Homing:
+                direction = _player.transform.position - transform.position;
+                direction.Normalize();
+                var rb2D = this.GetComponent<Rigidbody2D>();
+                rb2D.AddForce(direction * speed * Time.deltaTime, ForceMode2D.Force);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             var damageable = collision.gameObject.GetComponent<IDamageable>();
             damageable.TakeDamage(10);
