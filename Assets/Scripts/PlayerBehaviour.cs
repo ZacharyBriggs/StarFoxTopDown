@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
-{ 
+{
     public float Speed;
     public BulletBehaviour ProjectilePrefab;
     private CharacterController cc;
-    private Vector3 _direction;
-    
+
 	// Use this for initialization
 	void Start ()
     {
         cc = GetComponent<CharacterController>();
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
     {
-        
         this.transform.position += PlayerInput.InputVector*Speed*Time.deltaTime;
         if(Input.GetButton("Fire1"))
         {
