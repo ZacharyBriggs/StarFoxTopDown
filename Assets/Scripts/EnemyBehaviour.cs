@@ -1,27 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyBehaviour : MonoBehaviour, IDamageable
 {
-    public FloatVariable _health;
-    public FloatVariable _speed;
-    public Vector3 _direction;
+    [FormerlySerializedAs("Health")] public float health;
+    [FormerlySerializedAs("Speed")] public float speed;
+    [FormerlySerializedAs("FireRate")] public float fireRate;
+    public Vector3 direction;
+    private FloatVariable _health;
+    private FloatVariable _speed;
+    private FloatVariable _fireRate;
+    public BulletPatternScriptable bp;
 
-    void Start ()
+    private void Start ()
     {
-		
-	}
+        _health = ScriptableObject.CreateInstance<FloatVariable>();
+        _speed = ScriptableObject.CreateInstance<FloatVariable>();
+        _fireRate = ScriptableObject.CreateInstance<FloatVariable>();
+        _health.maxValue = health;
+        _speed.maxValue = speed;
+        _fireRate.maxValue = fireRate;
+    }
 
-	void Update ()
+    private void Update ()
     {
-        this.transform.position += _direction * _speed._Value * Time.deltaTime;
+        _fireRate.value -= Time.deltaTime;
+        if (_fireRate.value <= 0)
+        {
+            foreach (var bullet in bp.bullets)
+            {
+                Instantiate(bullet,transform.position,Quaternion.identity);
+            }
+            _fireRate.value = _fireRate.maxValue;
+        }
+        this.transform.position += direction * _speed.value * Time.deltaTime;
 	}
 
     public void TakeDamage(float amount)
     {
-        _health._Value -= amount;
-        if (_health._Value <= 0)
+        _health.value -= amount;
+        if (_health.value <= 0)
             Destroy(this.gameObject);
     }
 
